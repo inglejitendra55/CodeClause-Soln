@@ -1,0 +1,35 @@
+import pyshorteners
+import tkinter as tk
+from tkinter import messagebox
+
+class URLShortener:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("URL Shortener")
+        self.root.geometry("400x150")
+
+        self.label = tk.Label(root, text="Enter URL:")
+        self.label.pack()
+
+        self.url_entry = tk.Entry(root, width=40)
+        self.url_entry.pack()
+
+        self.shorten_button = tk.Button(root, text="Shorten", command=self.shorten_url)
+        self.shorten_button.pack()
+
+    def shorten_url(self):
+        url = self.url_entry.get()
+        if url:
+            try:
+                s = pyshorteners.Shortener()
+                short_url = s.tinyurl.short(url)
+                messagebox.showinfo("Shortened URL", f"Shortened URL: {short_url}")
+            except Exception as e:
+                messagebox.showerror("Error", f"An error occurred: {e}")
+        else:
+            messagebox.showwarning("Warning", "Please enter a URL.")
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    url_shortener = URLShortener(root)
+    root.mainloop()
